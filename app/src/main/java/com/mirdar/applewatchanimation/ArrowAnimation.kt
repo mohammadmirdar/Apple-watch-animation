@@ -90,4 +90,12 @@ class ArrowAnimation(context: Context) : View(context) {
         startX: Float,
         startY: Float
     ) = (tangentSlope * (circleCenterX - startX)) - startY
+
+    // list of particles
+    // each particle with the degree of drawing
+    // return the slope and line formula
+    // progress of 0 to 2 0-1 for view and 1-2 hiding
+    // maximum size
+    // duration
+    // start time
 }
