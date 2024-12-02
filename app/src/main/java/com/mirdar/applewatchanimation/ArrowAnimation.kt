@@ -18,7 +18,7 @@ class ArrowAnimation(context: Context) : View(context) {
     val arcRect = RectF()
     val circlePaint = Paint(Paint.ANTI_ALIAS_FLAG)
     val circleRadius = 10f
-    val arcRadius = 100f
+    val arcRadius = 400f
     val animDuration = 5000f
     var elapsedTime = 0L
     var startTime = 0L
@@ -45,43 +45,42 @@ class ArrowAnimation(context: Context) : View(context) {
         val fraction = elapsedTime / animDuration
 
         val bottom = (measuredHeight / 2f) + arcRadius
-        var right = (measuredWidth / 2f) + arcRadius
+        val right = (measuredWidth / 2f) + arcRadius
         arcRect.set(
             (measuredWidth / 2f) - arcRadius,
             (measuredHeight / 2f) - arcRadius,
             right,
             bottom
         )
-        val sweepAngle = 360f * fraction * 2
+        val sweepAngle = 360f * fraction
+        val sweepAngleTime = sweepAngle * 2
         canvas.drawArc(
             arcRect,
             0f,
-            sweepAngle,
+            360f,
             false,
             arcPaint
         )
         val circleCenterX = measuredWidth / 2
         val circleCenterY = measuredHeight / 2
-        var startX = circleCenterX + (arcRadius * cos(0f))
+        val startX = circleCenterX + (arcRadius * cos(0f))
         var startY = circleCenterY + (arcRadius * sin(0f))
 
-        val tangentSlope = ((startX - circleCenterX) / (startY - circleCenterY)) * -1
-        var y1 = calculateTangentY(tangentSlope, circleCenterX, startX, startY)
-//        var y2 = calculateTangentY(tangentSlope, circleCenterX, )
-        startY += (fraction * 10).pow(2)
-        canvas.drawLine(
-            startX.toFloat(),
-            startY,
-            (startX - 15f).toFloat(),
-            startY + 40f,
-            circlePaint
+        val particle = Particles(
+            circleCenterX,
+            circleCenterY,
+            arcRadius.toInt(),
+            Math.toRadians(90.0).toFloat(),
+            200,
+            5000,
+            System.currentTimeMillis()
         )
-
+        particle.draw(canvas)
 
         if (fraction > 1f) {
             return
         }
-        invalidate()
+//        invalidate()
     }
 
     private fun calculateTangentY(
