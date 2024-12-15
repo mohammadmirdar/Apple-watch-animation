@@ -5,10 +5,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import android.util.Log
 import android.view.View
 import kotlin.math.cos
-import kotlin.math.pow
 import kotlin.math.sin
 
 private const val TAG = "ArrowAnimation"
@@ -16,13 +14,13 @@ private const val TAG = "ArrowAnimation"
 class ArrowAnimation(context: Context) : View(context) {
     val arcPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     val arcRect = RectF()
-    val circlePaint = Paint(Paint.ANTI_ALIAS_FLAG)
     val circleRadius = 10f
     val arcRadius = 400f
     val animDuration = 5000f
     var elapsedTime = 0L
     var startTime = 0L
     var firstTime = false
+    val particles = mutableListOf<Particle>()
 
     init {
         setWillNotDraw(false)
@@ -30,17 +28,22 @@ class ArrowAnimation(context: Context) : View(context) {
         arcPaint.strokeWidth = 10f
         arcPaint.color = Color.BLUE
 
-        circlePaint.style = Paint.Style.FILL
-        circlePaint.color = Color.RED
-        circlePaint.strokeWidth = 10f
+        (0..359).forEach { _ ->
+            particles.add(
+                Particle()
+            )
+        }
 
         startTime = System.currentTimeMillis()
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        val circleCenterX = measuredWidth / 2
+        val circleCenterY = measuredHeight / 2
         val now = System.currentTimeMillis()
         firstTime = elapsedTime == 0L
+
         elapsedTime = now - startTime
         val fraction = elapsedTime / animDuration
 
@@ -57,30 +60,33 @@ class ArrowAnimation(context: Context) : View(context) {
         canvas.drawArc(
             arcRect,
             0f,
-            360f,
+            sweepAngleTime,
             false,
             arcPaint
         )
-        val circleCenterX = measuredWidth / 2
-        val circleCenterY = measuredHeight / 2
-        val startX = circleCenterX + (arcRadius * cos(0f))
-        var startY = circleCenterY + (arcRadius * sin(0f))
+        if (firstTime) {
+            particles.forEachIndexed { index, particle ->
+                if (index % 5 == 0) {
+                    particle.circleCenterX = circleCenterX
+                    particle.circleCenterY = circleCenterY
+                    particle.radius = arcRadius.toInt()
+                    particle.degreeOfDraw = Math.toRadians(index.toDouble()).toFloat()
+                    particle.startTime = elapsedTime
 
-        val particle = Particles(
-            circleCenterX,
-            circleCenterY,
-            arcRadius.toInt(),
-            Math.toRadians(90.0).toFloat(),
-            200,
-            5000,
-            System.currentTimeMillis()
-        )
-        particle.draw(canvas)
+                }
+            }
+        }
+
+        particles.forEachIndexed { index, particle ->
+            if (index % 5 == 0 && index < sweepAngle * 1.5) {
+                particle.draw(canvas, elapsedTime)
+            }
+        }
 
         if (fraction > 1f) {
             return
         }
-//        invalidate()
+        invalidate()
     }
 
     private fun calculateTangentY(
