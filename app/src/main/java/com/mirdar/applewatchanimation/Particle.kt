@@ -3,9 +3,7 @@ package com.mirdar.applewatchanimation
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
@@ -19,12 +17,14 @@ data class Particle(
     var radius: Int = 0,
     var degreeOfDraw: Float = 0f,
     var maximumSize: Int = (100..200).random(),
-    var duration: Int = (1000..3000).random(),
+    var duration: Int = (5000..10000).random(),
     var startTime: Long = 0,
-    var growthRatio : Double = Random.nextDouble(0.5, 1.0)
+    var growthRatio : Double = Random.nextDouble(0.5, 1.0),
+    var moveSize : Int = (400..700).random()
 ) {
-    var time = 0f
+    var time = 0L
     val linePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    var isFirstDraw = true
 
     init {
         linePaint.strokeWidth = 4f
@@ -32,11 +32,14 @@ data class Particle(
         linePaint.color = Color.RED
     }
 
-    fun draw(canvas: Canvas, elapsedTime : Long) {
-        time += elapsedTime
-        val fraction = elapsedTime.toFloat() / duration
+    fun draw(canvas: Canvas) {
+        if (isFirstDraw) {
+            startTime = System.currentTimeMillis()
+            isFirstDraw = false
+        }
+        time = System.currentTimeMillis() - startTime
+        val fraction = time.toFloat() / duration
 
-        Log.e(TAG, "elapsedTime: $elapsedTime time: $time duration: $duration fraction: $fraction")
         if (fraction > 1) return
 
         val startX = circleCenterX + (radius * cos(degreeOfDraw))
@@ -56,6 +59,7 @@ data class Particle(
 
         val endX = if (degreeOfDraw <= Math.PI) startX - deltaX else startX + deltaX
         val endY = if (degreeOfDraw <= Math.PI) startY - deltaY else startY + deltaY
+        Log.e(TAG, "this: ${this.hashCode()} elapsedTime: $time startX: $startX, startY: $startY, endX: $endX, endY: $endY fraction: $fraction")
 
 
         canvas.drawLine(startX, startY, endX, endY, linePaint)

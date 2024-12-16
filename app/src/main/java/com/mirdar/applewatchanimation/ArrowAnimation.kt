@@ -6,8 +6,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.view.View
-import kotlin.math.cos
-import kotlin.math.sin
 
 private const val TAG = "ArrowAnimation"
 
@@ -16,7 +14,7 @@ class ArrowAnimation(context: Context) : View(context) {
     val arcRect = RectF()
     val circleRadius = 10f
     val arcRadius = 400f
-    val animDuration = 5000f
+    val animDuration = 10000f
     var elapsedTime = 0L
     var startTime = 0L
     var firstTime = false
@@ -71,7 +69,6 @@ class ArrowAnimation(context: Context) : View(context) {
                     particle.circleCenterY = circleCenterY
                     particle.radius = arcRadius.toInt()
                     particle.degreeOfDraw = Math.toRadians(index.toDouble()).toFloat()
-                    particle.startTime = elapsedTime
 
                 }
             }
@@ -79,13 +76,10 @@ class ArrowAnimation(context: Context) : View(context) {
 
         particles.forEachIndexed { index, particle ->
             if (index % 5 == 0 && index < sweepAngle * 1.5) {
-                particle.draw(canvas, elapsedTime)
+                particle.draw(canvas)
             }
         }
 
-        if (fraction > 1f) {
-            return
-        }
         invalidate()
     }
 
