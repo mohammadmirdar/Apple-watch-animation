@@ -10,21 +10,21 @@ import android.view.View
 private const val TAG = "ArrowAnimation"
 
 class ArrowAnimation(context: Context) : View(context) {
-    val arcPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-    val arcRect = RectF()
+    private val arcPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val arcRect = RectF()
     val circleRadius = 10f
-    val arcRadius = 400f
-    val animDuration = 10000f
-    var elapsedTime = 0L
-    var startTime = 0L
-    var firstTime = false
-    val particles = mutableListOf<Particle>()
+    private val arcRadius = 400f
+    private val animDuration = 10000f
+    private var elapsedTime = 0L
+    private var startTime = 0L
+    private var firstTime = false
+    private val particles = mutableListOf<Particle>()
 
     init {
         setWillNotDraw(false)
         arcPaint.style = Paint.Style.STROKE
         arcPaint.strokeWidth = 10f
-        arcPaint.color = Color.BLUE
+        arcPaint.color = Color.RED
 
         (0..359).forEach { _ ->
             particles.add(
@@ -64,18 +64,15 @@ class ArrowAnimation(context: Context) : View(context) {
         )
         if (firstTime) {
             particles.forEachIndexed { index, particle ->
-                if (index % 5 == 0) {
-                    particle.circleCenterX = circleCenterX
-                    particle.circleCenterY = circleCenterY
-                    particle.radius = arcRadius.toInt()
-                    particle.degreeOfDraw = Math.toRadians(index.toDouble()).toFloat()
-
-                }
+                particle.circleCenterX = circleCenterX
+                particle.circleCenterY = circleCenterY
+                particle.radius = arcRadius.toInt()
+                particle.degreeOfDraw = Math.toRadians(index.toDouble()).toFloat()
             }
         }
 
         particles.forEachIndexed { index, particle ->
-            if (index % 5 == 0 && index < sweepAngle * 1.5) {
+            if (index < sweepAngle * 2) {
                 particle.draw(canvas)
             }
         }
