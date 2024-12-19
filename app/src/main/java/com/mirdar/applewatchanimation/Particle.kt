@@ -25,6 +25,7 @@ data class Particle(
 ) {
     private var time = 0L
     private val linePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val lineGlowPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var isFirstDraw = true
     private var sumOfDuration = duration
 
@@ -32,8 +33,13 @@ data class Particle(
         linePaint.strokeWidth = 4f
         linePaint.style = Paint.Style.STROKE
         linePaint.strokeCap = Paint.Cap.ROUND
-        linePaint.color = Color.RED
-        linePaint.maskFilter = BlurMaskFilter(14f, BlurMaskFilter.Blur.OUTER)
+        linePaint.color = Color.WHITE
+
+        lineGlowPaint.strokeWidth = 8f
+        lineGlowPaint.style = Paint.Style.STROKE
+        lineGlowPaint.strokeCap = Paint.Cap.ROUND
+        lineGlowPaint.color = Color.RED
+        lineGlowPaint.maskFilter = BlurMaskFilter(14f, BlurMaskFilter.Blur.NORMAL)
     }
 
     fun draw(canvas: Canvas) {
@@ -93,6 +99,7 @@ data class Particle(
         )
 
 
+        canvas.drawLine(newStartX, newStartY, newEndX, newEndY, lineGlowPaint)
         canvas.drawLine(newStartX, newStartY, newEndX, newEndY, linePaint)
     }
 

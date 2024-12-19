@@ -1,6 +1,7 @@
 package com.mirdar.applewatchanimation
 
 import android.content.Context
+import android.graphics.BlurMaskFilter
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -11,6 +12,7 @@ private const val TAG = "ArrowAnimation"
 
 class ArrowAnimation(context: Context) : View(context) {
     private val arcPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val arcGlowPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val arcRect = RectF()
     val circleRadius = 10f
     private val arcRadius = 400f
@@ -25,6 +27,11 @@ class ArrowAnimation(context: Context) : View(context) {
         arcPaint.style = Paint.Style.STROKE
         arcPaint.strokeWidth = 10f
         arcPaint.color = Color.RED
+
+        arcGlowPaint.style = Paint.Style.STROKE
+        arcGlowPaint.strokeWidth = 18f
+        arcGlowPaint.color = Color.RED
+        arcGlowPaint.maskFilter = BlurMaskFilter(28f, BlurMaskFilter.Blur.NORMAL)
 
         (0..359).forEach { _ ->
             particles.add(
@@ -61,6 +68,13 @@ class ArrowAnimation(context: Context) : View(context) {
             sweepAngleTime,
             false,
             arcPaint
+        )
+        canvas.drawArc(
+            arcRect,
+            0f,
+            sweepAngleTime,
+            false,
+            arcGlowPaint
         )
         if (firstTime) {
             particles.forEachIndexed { index, particle ->
