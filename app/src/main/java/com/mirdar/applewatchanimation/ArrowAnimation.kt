@@ -28,7 +28,7 @@ class ArrowAnimation(context: Context) : View(context) {
 
         (0..359).forEach { _ ->
             particles.add(
-                Particle()
+                Particle(mainAnimationDuration = animDuration.toInt())
             )
         }
 
