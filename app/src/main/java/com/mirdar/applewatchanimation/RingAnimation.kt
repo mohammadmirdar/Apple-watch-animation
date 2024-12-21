@@ -28,9 +28,9 @@ data class RingAnimation(
         arcPaint.maskFilter = BlurMaskFilter(8f, BlurMaskFilter.Blur.INNER)
 
         arcGlowPaint.style = Paint.Style.STROKE
-        arcGlowPaint.strokeWidth = 18f
+        arcGlowPaint.strokeWidth = 52f
         arcGlowPaint.color = color
-        arcGlowPaint.maskFilter = BlurMaskFilter(60f, BlurMaskFilter.Blur.NORMAL)
+        arcGlowPaint.maskFilter = BlurMaskFilter(68f, BlurMaskFilter.Blur.NORMAL)
 
         (0..359).forEach { _ ->
             particles.add(

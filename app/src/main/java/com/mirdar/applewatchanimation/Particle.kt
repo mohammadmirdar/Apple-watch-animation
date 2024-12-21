@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
+import androidx.core.graphics.ColorUtils
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
@@ -34,13 +35,13 @@ data class Particle(
         linePaint.strokeWidth = 4f
         linePaint.style = Paint.Style.STROKE
         linePaint.strokeCap = Paint.Cap.ROUND
-        linePaint.color = Color.WHITE
+        linePaint.color = ColorUtils.setAlphaComponent(Color.WHITE, 50)
 
-        lineGlowPaint.strokeWidth = 8f
+        lineGlowPaint.strokeWidth = 32f
         lineGlowPaint.style = Paint.Style.STROKE
         lineGlowPaint.strokeCap = Paint.Cap.ROUND
         lineGlowPaint.color = color
-        lineGlowPaint.maskFilter = BlurMaskFilter(14f, BlurMaskFilter.Blur.NORMAL)
+        lineGlowPaint.maskFilter = BlurMaskFilter(48f, BlurMaskFilter.Blur.NORMAL)
     }
 
     fun draw(canvas: Canvas) {
@@ -85,6 +86,7 @@ data class Particle(
             newEndY = if (degreeOfDraw <= Math.PI) endY - moveY else endY + moveY
             if (fraction > 0.5) {
                 linePaint.alpha = (255 - (fraction - 0.5f) * 255).toInt()
+                lineGlowPaint.alpha = (255 - (fraction - 0.5f) * 255).toInt()
             }
 
         } else {
