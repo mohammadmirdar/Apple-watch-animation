@@ -1,5 +1,6 @@
 package com.mirdar.applewatchanimation
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         root = LinearLayout(requireContext())
+        root.setBackgroundColor(Color.BLACK)
         root.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
@@ -28,7 +30,9 @@ class FirstFragment : Fragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        root.addView(ArrowAnimation(requireContext()), params)
+        root.addView(ArrowAnimation(requireContext()).apply {
+            setOnClickListener { runAnimation() }
+        }, params)
         return root
 
     }

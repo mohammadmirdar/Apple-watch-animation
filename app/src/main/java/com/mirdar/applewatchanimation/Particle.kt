@@ -13,6 +13,7 @@ import kotlin.math.sqrt
 private const val TAG = "Particle"
 
 data class Particle(
+    var color : Int,
     var circleCenterX: Int = 0,
     var circleCenterY: Int = 0,
     var radius: Int = 0,
@@ -38,7 +39,7 @@ data class Particle(
         lineGlowPaint.strokeWidth = 8f
         lineGlowPaint.style = Paint.Style.STROKE
         lineGlowPaint.strokeCap = Paint.Cap.ROUND
-        lineGlowPaint.color = Color.RED
+        lineGlowPaint.color = color
         lineGlowPaint.maskFilter = BlurMaskFilter(14f, BlurMaskFilter.Blur.NORMAL)
     }
 
@@ -82,8 +83,8 @@ data class Particle(
             newStartY = if (degreeOfDraw <= Math.PI) startY - moveY else startY + moveY
             newEndX = if (degreeOfDraw <= Math.PI) endX - moveX else endX + moveX
             newEndY = if (degreeOfDraw <= Math.PI) endY - moveY else endY + moveY
-            if (fraction > 0.7) {
-                linePaint.alpha = (255 - (fraction - 0.7f) * 255).toInt()
+            if (fraction > 0.5) {
+                linePaint.alpha = (255 - (fraction - 0.5f) * 255).toInt()
             }
 
         } else {
