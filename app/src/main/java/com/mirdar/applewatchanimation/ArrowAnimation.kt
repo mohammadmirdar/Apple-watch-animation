@@ -9,9 +9,9 @@ private const val TAG = "ArrowAnimation"
 
 class ArrowAnimation(context: Context) : View(context) {
 
-    private val redRingAnimation: RingAnimation = RingAnimation(Color.parseColor("#C227DE"), 10000, 400f)
-    private val greenRingAnimation: RingAnimation = RingAnimation(Color.parseColor("#8BC34A"), 10000, 300f)
-    private val yellowRingAnimation: RingAnimation = RingAnimation(Color.parseColor("#1EABE9"), 10000, 200f)
+    private val redRingAnimation: RingAnimation = RingAnimation(Color.parseColor("#C227DE"), 4000, 400f)
+    private val greenRingAnimation: RingAnimation = RingAnimation(Color.parseColor("#8BC34A"), 4000, 300f)
+    private val yellowRingAnimation: RingAnimation = RingAnimation(Color.parseColor("#1EABE9"), 4000, 200f)
 
     init {
         setWillNotDraw(false)
