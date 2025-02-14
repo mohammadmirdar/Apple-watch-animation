@@ -20,7 +20,7 @@ data class Particle(
     var radius: Int = 0,
     var degreeOfDraw: Float = 0f,
     var mainAnimationDuration: Int,
-    var maximumSize: Int = (20..30).random(),
+    var maximumSize: Int = (15..20).random(),
     var duration: Int = (500..1500).random(),
     var startTime: Long = 0,
     var moveSize: Int = (400..700).random()
@@ -107,7 +107,7 @@ data class Particle(
     }
 
     private fun resetParticle() {
-        maximumSize = (20..30).random()
+        maximumSize = (15..20).random()
         duration = getNewDuration()
         moveSize = (400..700).random()
         time = 0

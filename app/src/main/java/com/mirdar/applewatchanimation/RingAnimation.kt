@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.view.animation.AccelerateInterpolator
 
 data class RingAnimation(
     private val color : Int,
@@ -20,6 +21,7 @@ data class RingAnimation(
     private var startTime = 0L
     private var firstTime = false
     private val particles = mutableListOf<Particle>()
+    private val interpolator = AccelerateInterpolator()
 
     init {
         arcPaint.style = Paint.Style.STROKE
@@ -58,7 +60,8 @@ data class RingAnimation(
             right,
             bottom
         )
-        val sweepAngle = 360f * fraction
+
+        val sweepAngle = 360f * interpolator.getInterpolation(fraction)
         val sweepAngleTime = sweepAngle * 2
         canvas.drawArc(
             arcRect,
